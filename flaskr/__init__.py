@@ -4,6 +4,8 @@ from flask import Flask
 
 
 def create_app(test_config=None):
+    from . import auth, db
+
     # Create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -29,8 +31,10 @@ def create_app(test_config=None):
     def hello():
         return "Hello World!"
 
-    from . import db
-
+    # Create the database
     db.init_app(app)
+
+    # Register the auth blueprint
+    app.register_blueprint(auth.bp)
 
     return app
